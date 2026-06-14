@@ -242,18 +242,29 @@ document.addEventListener('DOMContentLoaded', () => {
         setError('message', '');
       }
 
-      if (!isValid) {
+if (!isValid) {
         formStatus.textContent = '';
         return;
       }
 
-      // NOTE: This is a static site, so there is no email backend yet.
-      // To actually receive these messages, connect this form to a
-      // service like Formspree (https://formspree.io) or EmailJS —
-      // see assets/README.md for quick setup steps.
-      formStatus.textContent = `Thanks, ${name}! This form isn't connected to an inbox yet — see assets/README.md to finish setup.`;
-      form.reset();
-    });
+      formStatus.textContent = 'Sending...';
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      })
+        .then((response) => {
+          if (response.ok) {
+            formStatus.textContent = `Thanks, ${name}! Your message has been sent — I'll get back to you soon.`;
+            form.reset();
+          } else {
+            formStatus.textContent = 'Something went wrong. Please try again or email me directly.';
+          }
+        })
+        .catch(() => {
+          formStatus.textContent = 'Something went wrong. Please try again or email me directly.';
+        });
   }
 
 });
