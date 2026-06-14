@@ -262,9 +262,10 @@ if (!isValid) {
             formStatus.textContent = 'Something went wrong. Please try again or email me directly.';
           }
         })
-        .catch(() => {
+         .catch(() => {
           formStatus.textContent = 'Something went wrong. Please try again or email me directly.';
         });
+    });
   }
 
 });
